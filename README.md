@@ -48,7 +48,7 @@ e então
 yarn sb init
 ```
 
-Subir o servirdor do Storybook:
+Subir o servidor do Storybook:
 ```.bash
 yarn storybook
 ```
