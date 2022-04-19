@@ -29,8 +29,11 @@ Subistitua o conteúdo de ./styles/globals.css com:
 @tailwind utilities;
 ````
 
-em ./pages/_app.tsx subistitua o import de 
-```import '../styles/globals.css'``` por ```import 'tailwindcss/tailwind.css';```
+em *./pages/_app.tsx* subistitua o import de 
+```import '../styles/globals.css'``` 
+por
+
+```import 'tailwindcss/tailwind.css';```
 
 Agora a aplicação está pronta para iniciar com o tailwindcss.
 
