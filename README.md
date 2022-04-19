@@ -1,34 +1,95 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Como usar Next + Tailwind + Storybook
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+## Add Tailwindcss:
+```
+npm install -D tailwindcss postcss autoprefixer
+```
+Iniciando o arquivo de configuração do tailwind com o postcss ```-p```
+```
+yarn tailwindcss init -p
+```
+subistitua o conteúdo do arquivo tailwind.config.js por:
+```.js
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Subistitua o conteúdo de ./styles.globals.css com:
+```.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+````
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+em ./pages/_app.tsx subistitua o import de 
+```import '../styles/globals.css'``` por ```import 'tailwindcss/tailwind.css';```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Agora a aplicação está pronta para iniciar com o tailwindcss.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+---
+## Add Storybook:
+Para o projeto reconhecer o storybook
 
-## Learn More
+```.bash
+yarn add @storybook/cli --dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+e então
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```.bash
+yarn sb init
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Subir o servirdor do Storybook:
+```.bash
+yarn storybook
+```
+### Possíveis Erros:
+#### Tailwind não funciona com Storybook:
+- O Storybook pode dar um erro com o a versão do PostCSS do Tailwind alegando que será necessário atualizar para o PostCSS8, será necessário adicionar nas bibliotecas:
 
-## Deploy on Vercel
+```.bash
+yarn add @storybook/addon-postcss --dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+para adicionar o addon do postcss para que o storybook o reconheça
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+dentro de ./storybook/main.js subistitua o conteúdo do código por:
+
+```.js
+module.exports = {
+  "stories": [
+    "../stories/**/*.stories.mdx",
+    "../stories/**/*.stories.@(js|jsx|ts|tsx)"
+  ],
+  "addons": [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
+    {
+        name: '@storybook/addon-postcss',
+        options: {
+          postcssLoaderOptions: {
+          implementation: require('postcss'),
+        },
+      },
+    },
+  ],
+  "framework": "@storybook/react"
+}
+```
+
+#### CSS do Tailwind não aparece no storybook:
+no arquivo __.storybook/preview.js__ adicione na primeira linha 
+
+```import 'tailwindcss/tailwind.css';```
+
+e reinicie o servidor do storybook novamente.

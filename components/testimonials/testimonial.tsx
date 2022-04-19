@@ -1,24 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 
-export function Testimonial() {
+type TestimonialProps = {
+    body: string;
+    name: string;
+    role: string;
+};
+
+
+/**
+ * Comentário de teste
+ * @param props props
+ * @returns nothing
+ */
+export function Testimonial(props: TestimonialProps) {
+  const [flag, setflag] = useState(true);
   return (
-    <div className="h-full text-center">
-      <img
-        alt="testimonial"
-        className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-800 bg-gray-800 bg-opacity-10"
-        src="https://dummyimage.com/302x302"
-      />
+    <div className="h-full text-center ring-4 ring-indigo-700">
+        {flag ? 
+            <img
+                className="mx-auto h-16 w-16 rounded-full"
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt="testimonial"
+            />
+         :
+            <img
+                className="mx-auto h-16 w-16 rounded-full"
+                src="https://dummyimage.com/302x302"
+                alt="testimonial"
+            />
+        }
+
       <p className="leading-relaxed">
-        Edison bulb retro cloud bread echo park, helvetica stumptown taiyaki
-        taxidermy 90's cronut +1 kinfolk. Single-origin coffee ennui shaman
-        taiyaki vape DIY tote bag drinking vinegar cronut adaptogen squid fanny
-        pack vaporware.
+        {props.body}
       </p>
       <span className="inline-block h-1 w-10 rounded bg-purple-500 mt-6 mb-4"></span>
       <h2 className="text-white font-medium title-font tracking-wider text-sm">
-        HOLDEN CAULFIELD
+        <button className="border-2 p-2 rounded-xl bg-purple-500" onClick={() => setflag(flag => !flag)}>
+            {props.name} + {flag ? "true" : "false"}
+        </button>
       </h2>
-      <p className="text-gray-500">Senior Product Designer</p>
+      <p className="text-gray-500">{props.role}</p>
     </div>
   );
 }
