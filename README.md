@@ -22,7 +22,7 @@ module.exports = {
 }
 ```
 
-Subistitua o conteúdo de ./styles.globals.css com:
+Subistitua o conteúdo de ./styles/globals.css com:
 ```.css
 @tailwind base;
 @tailwind components;
